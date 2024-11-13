@@ -15,7 +15,7 @@ import image10 from './assets/img/image10.png';
 import Csm_1 from './assets/img/Cms_1.jpg';
 import Csm_2 from './assets/img/Cms_2.png';
 import Csm_3 from './assets/img/Cms_3.jpg';
-
+import axios from "axios";
 
 export default {
   name: "App",
@@ -136,6 +136,33 @@ export default {
     }
 
   },
+  methods: {
+    fetchCategories() {
+      axios
+        .get("http://localhost:3000/api/categories")
+        .then(response => {
+          this.categories = response.data;
+        })
+        .catch(error => {
+          console.error("Error fetching categories:", error);
+        });
+    },
+    fetchPromotions() {
+      axios
+        .get("http://localhost:3000/api/promotions")
+        .then(response => {
+          this.promotions = response.data;
+        })
+        .catch(error => {
+          console.error("Error fetching promotions:", error);
+        });
+    }
+  },
+  mounted() {
+    this.fetchCategories();
+    this.fetchPromotions();
+  }
+
 }
 
 
@@ -156,7 +183,7 @@ export default {
       :Image="promotion.promotion_image"
       :content="promotion.content"
       />
-
+      <button @click="shopNow(promotion)"></button>
     </div>
 
   </main>
